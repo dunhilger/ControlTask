@@ -1,0 +1,26 @@
+USE [DBName];
+
+CREATE TABLE dbo.SKU
+(
+	ID INT PRIMARY KEY IDENTITY,
+	Code AS 's' + CAST(ID AS varchar(20)) UNIQUE,
+	[Name] VARCHAR(20) NOT NULL,
+);
+
+CREATE TABLE dbo.Family
+(
+	ID INT PRIMARY KEY IDENTITY,
+	SurName VARCHAR(255),
+	BudgetValue DECIMAL(18, 2)
+);
+
+CREATE TABLE dbo.Basket 
+(
+	ID INT PRIMARY KEY IDENTITY,
+	ID_SKU INT REFERENCES dbo.SKU(ID),
+	ID_Family INT REFERENCES dbo.Family(ID), 
+	Quantity INT CHECK(Quantity >= 0) NOT NULL,
+	[Value] INT CHECK([Value] >= 0) NOT NULL,
+	PurchaseDate DATETIME DEFAULT GETDATE() NOT NULL,
+	DiscountValue DECIMAL(18, 2)
+);
